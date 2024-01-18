@@ -82,8 +82,8 @@ def confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path
                 rundll32_path = os.path.join(os.environ['SYSTEMROOT'], 'System32', 'rundll32.exe')
                 
                 if os.path.exists(rundll32_path):
-                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"]) << Disallowing shell=true
-                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/if", "/b", "Network Printer", "/f", var_inf_path, "/r", var_ip, "/m", var_driver]) << Disallowing shell=true
+                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"]) # Disallowing shell=true
+                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/if", "/b", "Network Printer", "/f", var_inf_path, "/r", var_ip, "/m", var_driver]) # Disallowing shell=true
                     print("Installation Finished. Goodbye!")
                     time.sleep(3)
                 else:
