@@ -6,7 +6,7 @@ there will be GUI in installation, so we as IT Support usually bypass the memory
 minimize usage as much as we can. Only to ensure the deployment process meet its deadline without delaying.
 
 You can compile to an .exe but ensure the variable for the Printer Driver INF followed the directories (or you may implement the path of your own such as network sharing).
-Should take note that pyinstaller are used, and the Executable File will never been recognized with your AV (OpenEDR Detect this as malicious activity), Cose Signing preferable.
+Should take note that pyinstaller are used, and the Executable File will never been recognized with your AV (OpenEDR Detect this as malicious activity), Code Signing preferable.
 
 Follow my github to empowering IT Support People in automation encouragement.
 Microsoft sucks our life hard.
