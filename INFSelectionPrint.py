@@ -93,13 +93,13 @@ def confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path
             if var_confirm == "YES" or var_confirm == "Y":
                 print("Installation starting in 5 seconds...")
                 time.sleep(5)
-                
+                #--------------------------------------------------------------------------------------------------------------------------------------------------------sof
                 rundll32_path = os.path.join(os.environ['SYSTEMROOT'], 'System32', 'rundll32.exe')
                 
                 if os.path.exists(rundll32_path):
-                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"], shell=True)
-                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/if", "/b", "Network Printer", "/f", var_inf_path, "/r", var_ip, "/m", var_driver], shell=True)
-                    print("Installation Finished. Goodbye!")
+                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"], shell=True)                                             # shell=true are vulnerable
+                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/if", "/b", "Network Printer", "/f", var_inf_path, "/r", var_ip, "/m", var_driver], shell=True) # shell=true are vulnerable
+                    print("Installation Finished. Goodbye!") #-----------------------------------------------------------------------------------------------------------eof
                     time.sleep(3)
                 else:
                     print("Warning: rundll32 not found. Installation cannot proceed.")
