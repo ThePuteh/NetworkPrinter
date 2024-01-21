@@ -1,14 +1,17 @@
 import subprocess
 import time
 import os
-import socket  # Library for IP address validation
+import socket
 from tkinter import Tk, filedialog
+import hashlib
+import getpass  # Import the getpass module for password input
+import sys  # Import the sys module for sys.exit()
 
 def validate_ipv4(address):
     try:
         socket.inet_pton(socket.AF_INET, address)
         return True
-    except AttributeError:  # For systems without inet_pton function
+    except AttributeError:
         try:
             socket.inet_aton(address)
             return True
@@ -22,22 +25,49 @@ def clear_console():
 
 def browse_file():
     root = Tk()
-    root.withdraw()  # Hide the root window
+    root.withdraw()
 
     file_path = filedialog.askopenfilename(
         title="Select INF File",
         filetypes=(("INF Files", "*.inf"), ("All Files", "*.*"))
     )
 
-    root.destroy()  # Destroy the root window after file selection
+    root.destroy()
 
     return file_path
+
+def hash_password(password):
+    # Use SHA-256 for hashing
+    sha256 = hashlib.sha256()
+    sha256.update(password.encode())
+    return sha256.hexdigest()
+
+def get_masked_password():
+    return getpass.getpass("Enter password to proceed: ")
 
 def choose_printer():
     while True:
         clear_console()
         print("Network Printer Installation [Version 1.00]")
         print("(c) Printer Batch Installation. All rights reserved.")
+        
+        # Prompt user for password
+        password = get_masked_password()
+
+        # Hash the entered password for comparison
+        hashed_password = hash_password(password)
+
+        # Replace the stored hashed password with the actual hashed password
+        stored_hashed_password = hash_password("P@55w0rd_")
+
+        # Compare the hashed passwords
+        if hashed_password == stored_hashed_password:
+            print("Password accepted. Please continue.")
+        else:
+            print("Incorrect password. Try again.")
+            time.sleep(2)
+            continue  # Restart the loop if the password is incorrect
+
         print("")
         print("Existing Printer:")
         print("")
@@ -54,7 +84,7 @@ def choose_printer():
                     break
                 else:
                     print("Invalid IPv4 format. Please enter a valid IP Address.")
-            clear_console()  # Clears the console after IP input
+            clear_console()
             var_driver = "Canon PCL6 Driver"
             var_inf_path = browse_file()
             confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path)
@@ -67,7 +97,7 @@ def choose_printer():
                     break
                 else:
                     print("Invalid IPv4 format. Please enter a valid IP Address.")
-            clear_console()  # Clears the console after IP input
+            clear_console()
             var_driver = "HP Universal Printing PCL 6 Driver"
             var_inf_path = browse_file()
             confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path)
@@ -103,15 +133,15 @@ def confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path
                     time.sleep(3)
                 else:
                     print("Warning: rundll32 not found. Installation cannot proceed.")
-                exit()  # Exit the script after successful installation
+                sys.exit()  # Use sys.exit() instead of exit()
             elif var_confirm == "NO" or var_confirm == "N":
                 print("Exiting the script. Goodbye!")
-                exit()  # Exit the script
+                sys.exit()  # Use sys.exit() instead of exit()
             elif var_confirm == "RESTART" or var_confirm == "R":
                 print("Restarting printer selection...")
                 time.sleep(2)
                 choose_printer()
-                break  # Exit loop if 'Restart' is entered
+                break
         else:
             clear_console()
             print("Invalid Input Option!")
