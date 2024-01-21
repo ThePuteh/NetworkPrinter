@@ -83,7 +83,13 @@ def confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path
     print(f"IP address : {var_ip}")
     print(f"Driver Path Selected (INF Files) : {var_inf_path}")
     print("")
-    #-----------------------------------------------------------------------------Shellcode Command Injection Fixed--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------Shellcode Command Injection Fixed--------------------------------------------------------------------------------
+system_root = os.environ.get('SYSTEMROOT')
+
+if not system_root or not os.path.exists(system_root):
+    print("Error: SYSTEMROOT environment variable is not set or invalid.")
+    exit()
+
 while True:
     print("Proceed with this setup? (Yes/No/Restart)")
     print("Enter y/n or r for restart")
@@ -93,7 +99,7 @@ while True:
         if var_confirm == "YES" or var_confirm == "Y":
             print("Installation starting in 5 seconds...")
             time.sleep(5)
-            rundll32_path = os.path.join(os.environ['SYSTEMROOT'], 'System32', 'rundll32.exe')
+            rundll32_path = os.path.join(system_root, 'System32', 'rundll32.exe')
 
             if os.path.exists(rundll32_path):
                 subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"])
@@ -111,8 +117,7 @@ while True:
             time.sleep(2)
             choose_printer()
             break  # Exit loop if 'Restart' is entered
-
-    #----------------------------------------------------------------------------------------------EOF------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------EOF------------------------------------------------------------------------------------------
         else:
             clear_console()
             print("Invalid Input Option!")
