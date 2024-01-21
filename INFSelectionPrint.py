@@ -7,6 +7,8 @@ import hashlib
 import getpass  # Import the getpass module for password input
 import sys  # Import the sys module for sys.exit()
 
+# ----------------------------------- Input Password will going through encryption with hash ----------------------------------------------------- #
+
 def validate_ipv4(address):
     try:
         socket.inet_pton(socket.AF_INET, address)
@@ -50,7 +52,7 @@ def choose_printer():
         clear_console()
         print("Network Printer Installation [Version 1.00]")
         print("(c) Printer Batch Installation. All rights reserved.")
-        
+
         # Prompt user for password
         password = get_masked_password()
 
@@ -113,7 +115,7 @@ def confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path
     print(f"IP address : {var_ip}")
     print(f"Driver Path Selected (INF Files) : {var_inf_path}")
     print("")
-
+# ---------------------------------------------------------- Shellcode Injection occur here, mitigating by prompting user to enter a password to use this script ---------------- #
     while True:
         print("Proceed with this setup? (Yes/No/Restart)")
         print("Enter y/n or r for restart")
@@ -127,8 +129,8 @@ def confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path
                 rundll32_path = os.path.join(os.environ['SYSTEMROOT'], 'System32', 'rundll32.exe')
                 
                 if os.path.exists(rundll32_path):
-                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"], shell=True)
-                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/if", "/b", "Network Printer", "/f", var_inf_path, "/r", var_ip, "/m", var_driver], shell=True)
+                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"])
+                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/if", "/b", "Network Printer", "/f", var_inf_path, "/r", var_ip, "/m", var_driver])
                     print("Installation Finished. Goodbye!")
                     time.sleep(3)
                 else:
@@ -142,6 +144,7 @@ def confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path
                 time.sleep(2)
                 choose_printer()
                 break
+# ---------------------------------------------------------- EOF ---------------------------------------------------------------------------------------------------------------- #
         else:
             clear_console()
             print("Invalid Input Option!")
