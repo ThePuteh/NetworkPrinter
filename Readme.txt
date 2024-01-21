@@ -8,7 +8,8 @@ minimize usage as much as we can. Only to ensure the deployment process meet its
 You can compile to an .exe but ensure the variable for the Printer Driver INF followed the directories (or you may implement the path of your own such as network sharing).
 Should take note that pyinstaller are used, and the Executable File will never been recognized with your AV (OpenEDR Detect this as malicious activity), Code Signing preferable.
 
-There will be 2 Method to install, Simple Code, you can do it.
+You may compile with pyinstaller --onefile <script>
+Usage : Run Executable, Target IP Address, Select INF Driver, start install, test print.
 
 Follow my github to empowering IT Support People in automation encouragement.
 Microsoft sucks our life hard.
