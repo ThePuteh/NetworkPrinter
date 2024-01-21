@@ -83,35 +83,35 @@ def confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path
     print(f"IP address : {var_ip}")
     print(f"Driver Path Selected (INF Files) : {var_inf_path}")
     print("")
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-while True:
-    print("Proceed with this setup? (Yes/No/Restart)")
-    print("Enter y/n or r for restart")
-    var_confirm = input().upper()
 
-    if var_confirm in ["YES", "NO", "RESTART", "Y", "N", "R"]:
-        if var_confirm == "YES" or var_confirm == "Y":
-            print("Installation starting in 5 seconds...")
-            time.sleep(5)
-            rundll32_path = os.path.join(os.environ['SYSTEMROOT'], 'System32', 'rundll32.exe')
+    while True:
+        print("Proceed with this setup? (Yes/No/Restart)")
+        print("Enter y/n or r for restart")
+        var_confirm = input().upper()
 
-            if os.path.exists(rundll32_path):
-                subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"])
-                subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/if", "/b", "Network Printer", "/f", var_inf_path, "/r", var_ip, "/m", var_driver])
-                print("Installation Finished. Goodbye!")
-                time.sleep(3)
-            else:
-                print("Warning: rundll32 not found. Installation cannot proceed.")
-            exit()  # Exit the script after successful installation
-        elif var_confirm == "NO" or var_confirm == "N":
-            print("Exiting the script. Goodbye!")
-            exit()  # Exit the script
-        elif var_confirm == "RESTART" or var_confirm == "R":
-            print("Restarting printer selection...")
-            time.sleep(2)
-            choose_printer()
-            break  # Exit loop if 'Restart' is entered
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        if var_confirm in ["YES", "NO", "RESTART", "Y", "N", "R"]:
+            if var_confirm == "YES" or var_confirm == "Y":
+                print("Installation starting in 5 seconds...")
+                time.sleep(5)
+                
+                rundll32_path = os.path.join(os.environ['SYSTEMROOT'], 'System32', 'rundll32.exe')
+                
+                if os.path.exists(rundll32_path):
+                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"], shell=True)
+                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/if", "/b", "Network Printer", "/f", var_inf_path, "/r", var_ip, "/m", var_driver], shell=True)
+                    print("Installation Finished. Goodbye!")
+                    time.sleep(3)
+                else:
+                    print("Warning: rundll32 not found. Installation cannot proceed.")
+                exit()  # Exit the script after successful installation
+            elif var_confirm == "NO" or var_confirm == "N":
+                print("Exiting the script. Goodbye!")
+                exit()  # Exit the script
+            elif var_confirm == "RESTART" or var_confirm == "R":
+                print("Restarting printer selection...")
+                time.sleep(2)
+                choose_printer()
+                break  # Exit loop if 'Restart' is entered
         else:
             clear_console()
             print("Invalid Input Option!")
