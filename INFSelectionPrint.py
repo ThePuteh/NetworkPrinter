@@ -4,23 +4,19 @@ import os
 import socket
 from tkinter import Tk, filedialog
 import hashlib
-import getpass  # Import the getpass module for password input
-import sys  # Import the sys module for sys.exit()
-
-# ----------------------------------- Input Password will going through encryption with hash ----------------------------------------------------- #
+import getpass
+import sys
 
 def validate_ipv4(address):
     try:
         socket.inet_pton(socket.AF_INET, address)
         return True
-    except AttributeError:
+    except (socket.error, AttributeError):
         try:
             socket.inet_aton(address)
             return True
         except socket.error:
             return False
-    except socket.error:
-        return False
 
 def clear_console():
     os.system('cls')  # For Windows
@@ -46,6 +42,14 @@ def hash_password(password):
 
 def get_masked_password():
     return getpass.getpass("Enter password to proceed: ")
+
+def handle_subprocess(command):
+    try:
+        subprocess.run(command, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing subprocess: {e}")
+        # Handle the error gracefully, possibly logging it or prompting the user for appropriate action
+        sys.exit(1)
 
 def choose_printer():
     while True:
@@ -115,7 +119,7 @@ def confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path
     print(f"IP address : {var_ip}")
     print(f"Driver Path Selected (INF Files) : {var_inf_path}")
     print("")
-# ---------------------------------------------------------- Shellcode Injection occur here, mitigating by prompting user to enter a password to use this script ---------------- #
+    
     while True:
         print("Proceed with this setup? (Yes/No/Restart)")
         print("Enter y/n or r for restart")
@@ -129,22 +133,22 @@ def confirm_installation(var_choice, var_brand, var_driver, var_ip, var_inf_path
                 rundll32_path = os.path.join(os.environ['SYSTEMROOT'], 'System32', 'rundll32.exe')
                 
                 if os.path.exists(rundll32_path):
-                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"])
-                    subprocess.run([rundll32_path, "printui.dll,PrintUIEntry", "/if", "/b", "Network Printer", "/f", var_inf_path, "/r", var_ip, "/m", var_driver])
+                    handle_subprocess([rundll32_path, "printui.dll,PrintUIEntry", "/ia", "/f", var_inf_path, "/h", "x64"])
+                    handle_subprocess([rundll32_path, "printui.dll,PrintUIEntry", "/if", "/b", "Network Printer", "/f", var_inf_path, "/r", var_ip, "/m", var_driver])
                     print("Installation Finished. Goodbye!")
                     time.sleep(3)
+                    sys.exit()
                 else:
-                    print("Warning: rundll32 not found. Installation cannot proceed.")
-                sys.exit()  # Use sys.exit() instead of exit()
+                    print("Error: rundll32 not found. Installation cannot proceed.")
+                    sys.exit(1)
             elif var_confirm == "NO" or var_confirm == "N":
                 print("Exiting the script. Goodbye!")
-                sys.exit()  # Use sys.exit() instead of exit()
+                sys.exit()
             elif var_confirm == "RESTART" or var_confirm == "R":
                 print("Restarting printer selection...")
                 time.sleep(2)
                 choose_printer()
                 break
-# ---------------------------------------------------------- EOF ---------------------------------------------------------------------------------------------------------------- #
         else:
             clear_console()
             print("Invalid Input Option!")
